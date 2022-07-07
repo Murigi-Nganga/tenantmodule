@@ -1,6 +1,11 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'routes/app_routes.dart';
+// import 'screens/log_in_screen.dart';
+import 'screens/onboarding/onborading_home_screen.dart';
+import 'theme/app_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -11,40 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Smart Real Estate',
+      debugShowCheckedModeBanner: false,
+      theme: appTheme,
       home: AnimatedSplashScreen(
             duration: 3000,
             splash: const FlutterLogo(size: 60,),
-            nextScreen: const MyHomePage(),
-            splashTransition: SplashTransition.fadeTransition,
-            // backgroundColor: Colors.blue
+            nextScreen: const OnboardingHomeScreen(),
+            splashTransition: SplashTransition.slideTransition,
       ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tenant Module'),
-      ),
-      body: 
-      const Center(
-        child: Text('Tenant Module Application'),
-      ),
+      routes: appRoutes
     );
   }
 }
