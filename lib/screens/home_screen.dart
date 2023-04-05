@@ -1,94 +1,91 @@
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:tenantmodule/screens/explore_screen.dart';
-import 'package:tenantmodule/theme/app_theme.dart';
-import 'package:tenantmodule/widgets/app_drawer.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
-    const HomeScreen({Key? key}) : super(key: key);
+import '../constants/app_theme.dart';
+import '../services/property_units_service.dart';
+import '../widgets/side_drawer.dart';
+import '../widgets/property_card.dart';
+import './explore_screen.dart';
 
-    static const routeName = '/home';
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-    bool get isATenant {
-      int randomNum = Random().nextInt(2);
-      return randomNum == 0 ? true : false;
-    }
+  static const routeName = '/home';
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-    @override
-    Widget build(BuildContext context) {
-       
-        return Scaffold(
-            appBar: AppBar(
-                title: const Text('Home'),
-                centerTitle: true,
+class _HomeScreenState extends State<HomeScreen> {
+  late PropertyUnitsProvider _propertyUnitsProv;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero).then((_) {
+      _propertyUnitsProv =
+          Provider.of<PropertyUnitsProvider>(context, listen: false);
+      _propertyUnitsProv.fetchTenantUnits('0722748949');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const SideDrawer(),
+      appBar: AppBar(
+        title: const Text(
+          'Home',
+        ),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () => _propertyUnitsProv.fetchTenantUnits('0722748949'),
+        color: kAccentColor,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: Column(
+              children: [
+                const Text('Welcome User'),
+                const Text('Your units: '),
+                const Divider(
+                  color: kSecondaryColorDark,
+                ),
+                const SizedBox(height: 10),
+                Consumer<PropertyUnitsProvider>(
+                  builder: (_, propertyUnitsProvider, __) {
+                    if (propertyUnitsProvider.fetchDataStatus ==
+                        DataStatus.fetching) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return ListView.builder(
+                          controller: ScrollController(),
+                          shrinkWrap: true,
+                          itemCount:
+                              propertyUnitsProvider.tenantPropertyUnits.length,
+                          itemBuilder: (ctx, index) => PropertyCardWidget(
+                              propertyUnitData: propertyUnitsProvider
+                                  .tenantPropertyUnits[index]));
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
             ),
-            drawer: const AppDrawer(),
-            body: isATenant ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const <Widget>[
-                                  CircleAvatar(
-                                      backgroundImage: AssetImage('assets/images/background_image.jpg'),
-                                      radius: 40,
-                                  ),
-                                  Text('Welcome John Doe'),
-                              ],
-                          ),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: BoxDecoration(
-                                // color: appColors['PrimaryColorDark'],
-                                gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.topRight,
-                                    colors: [
-                                        appColors['SecondaryColorDark'] as Color,
-                                        appColors['PrimaryColor'] as Color,
-                                    ]
-                                ),
-                                borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Text(
-                                'We note that you are yet to register as a tenant in one of our amazing properties. \n \n'
-                                'And we can’t wait for you to feel at home',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                ),
-                            ),
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * .6,
-                          child: ElevatedButton(
-                              onPressed: (){
-                                  Navigator.pushReplacementNamed(context, ExploreScreen.routeName);
-                              },
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: const <Widget>[
-                                      Text('Explore'),
-                                      Icon(
-                                          Icons.explore,
-                                          color: Colors.white,
-                                      ),
-                                  ],
-                              ),
-                          ),
-                        ),
-                    ],
-                 ),
-            ) :
-            const Center(child: Text('You are logged in!'))
-        );
-    }
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Explore',
+        onPressed: () {
+          Navigator.of(context).pushReplacementNamed(ExploreScreen.routeName);
+        },
+        child: const Icon(
+          Icons.explore,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
 }
