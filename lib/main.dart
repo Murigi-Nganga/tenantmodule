@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:tenantmodule/screens/upload_photo_screen.dart';
 import 'services/invoices_service.dart';
 import 'services/payments_service.dart';
 import 'services/feedback_service.dart';
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             splashTransition: SplashTransition.fadeTransition,
             pageTransitionType: PageTransitionType.fade,
             animationDuration: const Duration(seconds: 2),
-            nextScreen: const OnboardingHomeScreen(),
+            nextScreen: const UploadPhotoScreen(),
           ),
           routes: appRoutes,
         ),
