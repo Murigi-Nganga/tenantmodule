@@ -1,5 +1,8 @@
 import '../screens/auth/verification_screen.dart';
 import '../screens/invoice_details_screen.dart';
+import '../screens/photo feature/take_picture_screen.dart';
+import '../screens/photo feature/upload_photo_screen.dart';
+import '../screens/photo feature/view_photo_screen.dart';
 import '../screens/property_details_screen.dart';
 import '../screens/property_owner_profile_screen.dart';
 import '../screens/receipt_details_screen.dart';
@@ -34,4 +37,8 @@ var appRoutes = {
     ReceiptDetailsScreen.routeName: (context) => const ReceiptDetailsScreen(),
     InvoiceDetailsScreen.routeName: (context) => const InvoiceDetailsScreen(),
     InvoicePaymentScreen.routeName: (context) => const InvoicePaymentScreen(),
+    TakePictureScreen.routeName: (context) => const TakePictureScreen(),
+    UploadPhotoScreen.routeName: (context) => const UploadPhotoScreen(),
+    ViewPhotoScreen.routeName: (context) => const ViewPhotoScreen(),
 };
+
