@@ -10,7 +10,6 @@ class ViewPhotoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final routeArguments = ModalRoute.of(context)!.settings.arguments
         as Map<String, PropertyImage>;
-    print(routeArguments);
     final PropertyImage propertyImage =
         routeArguments["propertyImage"] as PropertyImage;
 
@@ -25,17 +24,17 @@ class ViewPhotoScreen extends StatelessWidget {
           children: [
           RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0,
           color: Colors.black,
         ),
         children: <TextSpan>[
-          TextSpan(
+          const TextSpan(
             text: 'Image Url: ',
           ),
           TextSpan(
             text: propertyImage.imageUrl,
-            style: TextStyle(
+            style: const TextStyle(
             decoration: TextDecoration.underline,
               fontWeight: FontWeight.bold,
               color: Colors.blue,
@@ -47,17 +46,17 @@ class ViewPhotoScreen extends StatelessWidget {
             const SizedBox(height: 10),
                       RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0,
           color: Colors.black,
         ),
         children: <TextSpan>[
-          TextSpan(
+          const TextSpan(
             text: 'Image ID: ',
           ),
           TextSpan(
             text: '${propertyImage.imageId}',
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blue,
             ),
